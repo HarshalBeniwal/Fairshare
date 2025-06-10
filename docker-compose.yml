@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: fairshare
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: fairshare
+      POSTGRES_USER: fairuser
+      POSTGRES_PASSWORD: fairpass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: fairshare-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/fairshare
+      SPRING_DATASOURCE_USERNAME: fairuser
+      SPRING_DATASOURCE_PASSWORD: fairpass
+      SPRING_LIQUIBASE_ENABLED: "false"
+    restart: on-failure
+
+volumes:
+  pgdata:
