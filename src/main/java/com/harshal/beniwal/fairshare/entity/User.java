@@ -1,5 +1,6 @@
 package com.harshal.beniwal.fairshare.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -7,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -18,22 +20,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "users", schema = "fairshare")
+@Table(name = "users")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-    @SequenceGenerator(
-            name = "user_seq",
-            sequenceName = "user_seq",
-            schema = "fairshare",
-            allocationSize = 1
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq_gen")
+    @SequenceGenerator(name = "user_seq_gen", sequenceName = "users_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false, length = 100, name = "user_name")
@@ -45,11 +45,7 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
 
-    @ManyToOne
-    @JoinColumn(
-            name = "group_id",
-            referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "fk_user_group")
-    )
-    private Group group;
+    @ManyToMany(mappedBy = "users")
+    private List<UserGroup> groups;
 }
+

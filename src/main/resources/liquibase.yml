@@ -1,7 +1,7 @@
-changeLogFile: src/main/resources/db/db.changelog-master.xml
-url: jdbc:postgresql://postgres:5432/fairshare
+changeLogFile: changelogs/0001_add_init.sql
+url: jdbc:postgresql://localhost:5433/fairshare
 username: fairuser
 password: fairpass
 referenceUrl: hibernate:spring:com.harshal.beniwal.fairshare.entity?dialect=org.hibernate.dialect.PostgreSQLDialect
 driver: org.postgresql.Driver
-classpath: target/classes
+classpath: /liquibase/classes
