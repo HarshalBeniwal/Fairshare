@@ -41,13 +41,14 @@ public class UserController {
                 .body(ApiResponse.success(savedUser.toString(), "User created successfully"));
     }
 
-    @GetMapping("/{groupId}/groups")
-    public ResponseEntity<ApiResponse<List<User>>> getUserGroups(@PathVariable UUID groupId) {
-        log.info("Received request to get users for group ID: {}", groupId);
-
-        List<User> users = userService.getUsersByGroupId(groupId);
-
-        return ResponseEntity.ok(ApiResponse.success(users, "Users retrieved successfully"));
-    }
+//    @GetMapping("/{groupId}/groups")
+//    public ResponseEntity<ApiResponse<List<User>>> getUserGroups(@PathVariable UUID groupId) {
+//        log.info("Received request to get users for group ID: {}", groupId);
+//
+//        List<User> users = userService.getUsersByGroupId(groupId);
+//
+//        return ResponseEntity.ok(ApiResponse.success(users, "Users retrieved successfully"));
+//    }
+//}
 }
 

@@ -42,13 +42,13 @@ public class UserService {
         return userMapper.toResponseDTO(saved);
     }
 
-    public List<User> getUsersByGroupId(UUID groupId) {
-        log.debug("Fetching users for group ID: {}", groupId);
-
-        List<User> users = groupRepository.getUsersByGroupId(groupId);
-        if (users.isEmpty()) {
-            throw new DomainException.UserException("No users found for group ID " + groupId, HttpStatus.OK);
-        }
-        return users;
-    }
+//    public List<User> getUsersByGroupId(UUID groupId) {
+//        log.debug("Fetching users for group ID: {}", groupId);
+//
+//        List<User> users = groupRepository.getUsersByGroupId(groupId);
+//        if (users.isEmpty()) {
+//            throw new DomainException.UserException("No users found for group ID " + groupId, HttpStatus.OK);
+//        }
+//        return users;
+//    }
 }

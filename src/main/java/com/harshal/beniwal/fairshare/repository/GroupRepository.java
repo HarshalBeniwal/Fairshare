@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface GroupRepository extends JpaRepository<UserGroup, UUID> , GroupCustomRepository {
     Boolean existsByGroupName(String groupName);
+
 }
