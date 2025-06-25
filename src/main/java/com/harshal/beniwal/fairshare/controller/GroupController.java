@@ -2,6 +2,7 @@ package com.harshal.beniwal.fairshare.controller;
 
 
 import com.harshal.beniwal.fairshare.model.ApiResponse;
+import com.harshal.beniwal.fairshare.model.group.AddUsersToGroupDTO;
 import com.harshal.beniwal.fairshare.model.group.UserGroupRequestDTO;
 import com.harshal.beniwal.fairshare.service.GroupService;
 import jakarta.validation.Valid;
@@ -9,10 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/groups")
@@ -29,13 +33,12 @@ public class GroupController {
         groupService.createGroup(userGroupRequest);
         return ResponseEntity.ok(ApiResponse.success(null ,"Group created successfully"));
     }
-//
-//    @GetMapping
-//    public ResponseEntity<ApiResponse<String>> getGroups() {
-//        log.info("Received request to get all groups");
-//
-//        // Assuming a method exists in GroupService to fetch all groups
-//        String groups = groupService.getAllGroups();
-//        return ResponseEntity.ok(ApiResponse.success(groups, "Groups retrieved successfully"));
-//    }
+
+    @PostMapping("/addUser/{groupId}")
+    public ResponseEntity<ApiResponse<String>> addUserToGroup(@Valid @RequestBody AddUsersToGroupDTO userGroupRequest, @PathVariable UUID groupId) {
+        log.info("Received request to add user to group: {}", userGroupRequest);
+
+        groupService.addUserToGroup(userGroupRequest, groupId);
+        return ResponseEntity.ok(ApiResponse.success(null, "User added to group successfully"));
+    }
 }

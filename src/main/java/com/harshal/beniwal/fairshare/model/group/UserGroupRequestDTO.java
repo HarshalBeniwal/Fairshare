@@ -13,5 +13,4 @@ public class UserGroupRequestDTO {
     @NotBlank(message = "Group name is required")
     private String groupName;
     private Long createdByUserId;
-    private List<User> users;
 }
