@@ -3,7 +3,9 @@ package com.harshal.beniwal.fairshare.service;
 import com.harshal.beniwal.fairshare.entity.User;
 import com.harshal.beniwal.fairshare.entity.UserGroup;
 import com.harshal.beniwal.fairshare.exception.DomainException;
+import com.harshal.beniwal.fairshare.mapper.UserMapper;
 import com.harshal.beniwal.fairshare.model.group.AddUsersToGroupDTO;
+import com.harshal.beniwal.fairshare.model.group.GroupResponseDTO;
 import com.harshal.beniwal.fairshare.model.group.UserGroupRequestDTO;
 import com.harshal.beniwal.fairshare.repository.GroupRepository;
 import com.harshal.beniwal.fairshare.repository.UserRepository;
@@ -23,6 +25,7 @@ public class GroupService {
 
     private final GroupRepository groupRepository;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public void createGroup(@Valid UserGroupRequestDTO userGroup) {
         Long userId = userGroup.getCreatedByUserId();
@@ -65,5 +68,18 @@ public class GroupService {
 
         userGroup.getUsers().addAll(usersToAdd);
         groupRepository.save(userGroup);
+    }
+
+    public GroupResponseDTO getAllUsersInGroup(UUID groupId) {
+        UserGroup userGroup= groupRepository.findById(groupId).orElseThrow(
+                () -> new DomainException.GroupException("Group with ID " + groupId + " not found",
+                        HttpStatus.NOT_FOUND));
+
+        List<User> users = userGroup.getUsers();
+        return GroupResponseDTO.builder()
+                .groupId(userGroup.getId())
+                .groupName(userGroup.getGroupName())
+                .users(userMapper.toResponseDTOList(users))
+                .build();
     }
 }

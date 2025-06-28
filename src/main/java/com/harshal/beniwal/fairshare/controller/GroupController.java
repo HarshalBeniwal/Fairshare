@@ -3,6 +3,7 @@ package com.harshal.beniwal.fairshare.controller;
 
 import com.harshal.beniwal.fairshare.model.ApiResponse;
 import com.harshal.beniwal.fairshare.model.group.AddUsersToGroupDTO;
+import com.harshal.beniwal.fairshare.model.group.GroupResponseDTO;
 import com.harshal.beniwal.fairshare.model.group.UserGroupRequestDTO;
 import com.harshal.beniwal.fairshare.service.GroupService;
 import jakarta.validation.Valid;
@@ -40,5 +41,13 @@ public class GroupController {
 
         groupService.addUserToGroup(userGroupRequest, groupId);
         return ResponseEntity.ok(ApiResponse.success(null, "User added to group successfully"));
+    }
+
+    @GetMapping("/{groupId}/users")
+    public ResponseEntity<ApiResponse<GroupResponseDTO>> getAllUsersInGroup(@PathVariable UUID groupId) {
+        log.info("Received request to get all users in group");
+
+        GroupResponseDTO groupResponse = groupService.getAllUsersInGroup(groupId);
+        return ResponseEntity.ok(ApiResponse.success(groupResponse, "Fetched all users in group successfully"));
     }
 }
