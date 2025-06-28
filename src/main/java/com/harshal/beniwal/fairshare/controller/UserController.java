@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 @Log4j2
 public class UserController {
@@ -40,15 +40,5 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(ApiResponse.success(savedUser.toString(), "User created successfully"));
     }
-
-//    @GetMapping("/{groupId}/groups")
-//    public ResponseEntity<ApiResponse<List<User>>> getUserGroups(@PathVariable UUID groupId) {
-//        log.info("Received request to get users for group ID: {}", groupId);
-//
-//        List<User> users = userService.getUsersByGroupId(groupId);
-//
-//        return ResponseEntity.ok(ApiResponse.success(users, "Users retrieved successfully"));
-//    }
-//}
 }
 

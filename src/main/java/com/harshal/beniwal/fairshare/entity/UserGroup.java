@@ -1,5 +1,6 @@
 package com.harshal.beniwal.fairshare.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,10 +46,14 @@ public class UserGroup {
     private User createdBy;
 
     @ManyToMany
+    @JsonBackReference
     @JoinTable(
             name = "group_members",
             joinColumns = @JoinColumn(name = "group_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<User> users;
+
+    @OneToMany(mappedBy = "group")
+    private List<Expense> expenses;
 }

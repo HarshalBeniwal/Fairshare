@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/groups")
+@RequestMapping("/groups")
 @RequiredArgsConstructor
 @Log4j2
 public class GroupController {
@@ -35,7 +35,7 @@ public class GroupController {
         return ResponseEntity.ok(ApiResponse.success(null ,"Group created successfully"));
     }
 
-    @PostMapping("/addUser/{groupId}")
+    @PostMapping("/{groupId}/users")
     public ResponseEntity<ApiResponse<String>> addUserToGroup(@Valid @RequestBody AddUsersToGroupDTO userGroupRequest, @PathVariable UUID groupId) {
         log.info("Received request to add user to group: {}", userGroupRequest);
 
