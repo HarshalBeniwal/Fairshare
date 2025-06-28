@@ -24,7 +24,7 @@ public class Expense {
     private Double amount;
 
     @Enumerated(EnumType.STRING)
-    private SPLITMODE splitMode;
+    private SPLITMODE split_mode;
 
     @ManyToOne
     @JoinColumn(name = "group_id")

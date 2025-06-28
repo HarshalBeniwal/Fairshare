@@ -39,9 +39,9 @@ public class ExpenseService {
         }
 
         Expense expense = Expense.builder()
-                .description(expenseRequest.setDescription())
+                .description(expenseRequest.getDescription())
                 .amount(expenseRequest.getAmount())
-                .splitMode(expenseRequest.getSplitmode())
+                .split_mode(expenseRequest.getSplitmode())
                 .group(userGroup)
                 .payer(payer)
                 .participants(userList)

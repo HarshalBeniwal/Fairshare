@@ -34,11 +34,9 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     @JsonManagedReference
-    @Builder.Default
     private List<UserGroup> groups;
 
     @OneToMany(mappedBy = "payer")
-    @Builder.Default
     private List<Expense> paidExpenses;
 }
 
