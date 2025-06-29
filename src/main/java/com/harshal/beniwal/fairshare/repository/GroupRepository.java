@@ -10,5 +10,4 @@ public interface GroupRepository extends JpaRepository<UserGroup, UUID> {
     Boolean existsByGroupName(String groupName);
 
     Optional<UserGroup> findById(UUID groupId);
-
 }
