@@ -5,6 +5,8 @@ on:
         description: 'Deployment environment'
         required: true
         default: 'production'
+permissions:
+  contents: read
 jobs:
   deploy:
     runs-on: ubuntu-latest
