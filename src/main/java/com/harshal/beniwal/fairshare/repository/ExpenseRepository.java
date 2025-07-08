@@ -1,8 +1,11 @@
 package com.harshal.beniwal.fairshare.repository;
 
 import com.harshal.beniwal.fairshare.entity.Expense;
+import com.harshal.beniwal.fairshare.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ExpenseRepository extends JpaRepository<Expense,Long> {
+import java.util.List;
 
+public interface ExpenseRepository extends JpaRepository<Expense,Long> {
+    List<Expense> findByPayer(User user);
 }

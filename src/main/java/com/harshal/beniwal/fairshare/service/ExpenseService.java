@@ -2,7 +2,11 @@ package com.harshal.beniwal.fairshare.service;
 
 import com.harshal.beniwal.fairshare.entity.*;
 import com.harshal.beniwal.fairshare.exception.DomainException;
+import com.harshal.beniwal.fairshare.mapper.ExpenseMapper;
+import com.harshal.beniwal.fairshare.model.expense.ExpenseDTO;
 import com.harshal.beniwal.fairshare.model.expense.ExpenseRequestDTO;
+import com.harshal.beniwal.fairshare.model.expense.ExpenseSplitDTO;
+import com.harshal.beniwal.fairshare.model.expense.ExpenseSummaryDTO;
 import com.harshal.beniwal.fairshare.repository.ExpenseRepository;
 import com.harshal.beniwal.fairshare.repository.ExpenseSplitRepository;
 import com.harshal.beniwal.fairshare.repository.GroupRepository;
@@ -22,6 +26,8 @@ public class ExpenseService {
     private final UserRepository userRepository;
     private final ExpenseRepository expenseRepository;
     private final ExpenseSplitRepository expenseSplitRepository;
+    private final ExpenseMapper expenseMapper;
+
     @Transactional
     public void addExpense(ExpenseRequestDTO expenseRequest) {
 
@@ -64,5 +70,36 @@ public class ExpenseService {
                         .ownedBy(user).build())
                 .toList();
         expenseSplitRepository.saveAll(expenseSplits);
+    }
+
+    public ExpenseSummaryDTO expenseSummary(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new DomainException.UserException("User not found", HttpStatus.NOT_FOUND));
+
+        List<ExpenseSplit> expenseSplitList = expenseSplitRepository.findByOwnedBy(user);
+        var totalOwes =  expenseSplitList.stream().mapToDouble(ExpenseSplit::getAmount).sum();
+
+        List<Expense> paidExpenses = expenseRepository.findByPayer(user);
+        var paidExpense = 0;
+
+        for( Expense expense : paidExpenses){
+            List<ExpenseSplit> expenseList = expenseSplitRepository.findByExpense(expense);
+            for (ExpenseSplit expenseSplit :  expenseList){
+                if(!expenseSplit.getOwnedBy().equals(user)){
+                    paidExpense+=expenseSplit.getExpense().getAmount();
+                }
+            }
+        }
+        List<ExpenseDTO> expenseDTOList = expenseMapper.toExpenseDTOList(paidExpenses);
+        List<ExpenseSplitDTO> expenseSplitDTOList = expenseMapper.toExpenseSplitDTOList(expenseSplitList);
+
+
+        return ExpenseSummaryDTO.builder()
+                .expenseList(expenseDTOList)
+                .expenseSplits(expenseSplitDTOList)
+                .totalOwes(totalOwes)
+                .totalPaidExpense(paidExpense)
+                .net(paidExpense-totalOwes)
+                .build();
     }
 }
